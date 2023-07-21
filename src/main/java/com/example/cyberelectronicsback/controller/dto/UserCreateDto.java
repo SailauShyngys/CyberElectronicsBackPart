@@ -9,4 +9,8 @@ import lombok.Setter;
 public class UserCreateDto {
     private String username;
     private String password;
+    private String firstName;
+    private String lastName;
+    private String shippingAddress;
+    private String phoneNumber;
 }
