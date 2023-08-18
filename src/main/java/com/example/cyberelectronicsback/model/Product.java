@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,9 +28,8 @@ public class Product {
     private Category category;
     @ManyToMany
     private List<Order> ProductOrders;
-    @ManyToOne
-    @JoinColumn(name = "image_id")
-    private Image image;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images = new ArrayList<>();
     @CreationTimestamp
     private ZonedDateTime createdDate;
     @UpdateTimestamp

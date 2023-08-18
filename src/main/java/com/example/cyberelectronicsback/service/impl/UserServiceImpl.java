@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,71 +24,51 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     private final JwtUtils jwtUtils;
-//    @Override
-//    public User createUser(UserCreateDto createDto) throws Exception {
-//        User user = new User();
-//        user.setUsername(createDto.getUsername());
-//        if(isValidPassword(createDto.getPassword())==true)
-//        {
-//            user.setPassword(createDto.getPassword());
-//        }
-//        else{
-//
-//        }
-//
-//        return userRepository.save(user);
-//    }
-//
-//    @Override
-//    public void updateUser(Long id, UserCreateDto createDto) throws Exception {
-//    User user = userRepository.findById(id).orElseThrow();
-//    user.setUsername(createDto.getUsername());
-//    if(isValidPassword(createDto.getPassword())==true)
-//    {
-//        user.setPassword(createDto.getPassword());
-//        userRepository.save(user);
-//    }
-//        System.out.println("Console is: " + System.console());;
-//
-//    }
-//    private Boolean isValidPassword(String password)
-//    {
-//
-//        // Regex to check valid password.
-//        String regex = "^(?=.*[0-9])"
-//                + "(?=.*[a-z])(?=.*[A-Z])"
-//                + "(?=.*[@#$%^&+=])"
-//                + "(?=\\S+$).{8,20}$";
-//
-//        // Compile the ReGex
-//        Pattern p = Pattern.compile(regex);
-//
-//        // If the password is empty
-//        // return false
-//        if (password == null) {
-//            return false;
-//        }
-//
-//        // Pattern class contains matcher() method
-//        // to find matching between given password
-//        // and regular expression.
-//        Matcher m = p.matcher(password);
-//
-//        // Return if the password
-//        // matched the ReGex
-//
-//        return m.matches();
-//    }
-//
-//    @Override
-//    public List<User> getByAllUser() throws Exception {
-//        return userRepository.findAll().stream().toList();
-//    }
-//
-//    @Override
-//    public void deleteUser(Long id) throws Exception {
-//        userRepository.deleteById(id);
-//    }
+
+
+    @Override
+    public User updateUser(Long id, UserCreateDto createDto) throws Exception {
+        User user = userRepository.findById(id).orElseThrow();
+        if (id != null){
+            user.setUsername(createDto.getUsername());
+            user.setFirstName(createDto.getFirstName());
+            user.setLastName(createDto.getLastName());
+            user.setEmail(createDto.getEmail());
+            user.setShippingAddress(createDto.getShippingAddress());
+            user.setPhoneNumber(createDto.getPhoneNumber());
+        }
+        return userRepository.save(user);
+    }
+
+    @Override
+    public List<User> getByAllUser() throws Exception {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public void deleteUser(Long id) throws Exception {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean verifyUser(String email, String phoneNumber) throws Exception {
+        User user = userRepository.findByEmailAndPhoneNumber(email, phoneNumber);
+        return user!=null;
+    }
+
+    @Override
+    public boolean updatePassword(Long id, String npsw) throws Exception {
+        User user = userRepository.findById(id).orElseThrow();
+
+        if(user != null){
+            String hashedPassword = passwordEncoder.encode(npsw);
+            user.setPassword(hashedPassword);
+            userRepository.save(user);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @Override
     public User registration(UserCreateDto dto) {
@@ -96,6 +77,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
         user.setShippingAddress(dto.getShippingAddress());
         user.setPhoneNumber(dto.getPhoneNumber());
 

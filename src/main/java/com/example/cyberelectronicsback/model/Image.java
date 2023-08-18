@@ -1,9 +1,6 @@
 package com.example.cyberelectronicsback.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,4 +13,8 @@ public class Image {
     private Long id;
     private String FileName;
     private String FilePath;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 }
