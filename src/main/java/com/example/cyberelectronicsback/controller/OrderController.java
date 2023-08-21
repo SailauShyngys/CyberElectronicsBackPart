@@ -27,7 +27,7 @@ public class OrderController {
 
     @PostMapping("/api/order")
     public Order createOrder(@RequestBody OrderCreateDto createDto) throws Exception {
-        return orderService.createOrder(createDto.getSportPitsId());
+        return orderService.createOrder(createDto.getProductId());
     }
 
     @DeleteMapping("/api/order/{id}")

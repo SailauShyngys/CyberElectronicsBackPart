@@ -8,5 +8,5 @@ import java.util.List;
 @Getter
 @Setter
 public class OrderCreateDto {
-    private List<Long> sportPitsId;
+    private List<Long> ProductId;
 }

@@ -45,4 +45,4 @@ public class UserController {
     public void deleteUser(@PathVariable Long id) throws Exception {
         userService.deleteUser(id);
     }
- }
+}

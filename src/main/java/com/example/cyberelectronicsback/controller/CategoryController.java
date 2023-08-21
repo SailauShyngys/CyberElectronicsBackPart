@@ -17,7 +17,7 @@ public class CategoryController {
     }
 
     @PostMapping("/api/categories")
-    public Long createCategoty(@RequestBody CategoryCreateDto createDto) {
+    public Long createCategory(@RequestBody CategoryCreateDto createDto) {
         return categoryService.createCategory(createDto.getName(), createDto.getDescription());
     }
 
